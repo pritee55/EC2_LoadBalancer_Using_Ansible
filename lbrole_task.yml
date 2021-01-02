@@ -1,0 +1,16 @@
+---
+# tasks file for lbrole
+- name: "installing the haproxy software into loadBalancer"
+  package:
+          name: "haproxy"
+          state: present
+
+- name: "copying the haproxy.cfg.j2 file to the loadBalancer"
+  template:
+          dest: "/etc/haproxy/haproxy.cfg"
+          src: "/etc/ansible/haproxy.cfg"
+
+- name: "restarting the loadBalancer"
+  service:
+          name: "haproxy"
+          state: restarted
