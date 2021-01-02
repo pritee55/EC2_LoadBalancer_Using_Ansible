@@ -1,0 +1,33 @@
+- hosts: "localhost"
+  vars_files:
+      - IAMkey.yml
+
+  tasks:
+  - name: "Provisioning OS on AWS using Ansible"
+    ec2:
+       key_name: "Hadoop_Arth_key"
+       instance_type: "t2.micro"
+       image: "ami-0a9d27a9f4f5c0efc"
+       wait: yes
+       count: 3
+       instance_tags:
+          Name: Ansible_Hosts
+       vpc_subnet_id: "subnet-023a336a"
+       assign_public_ip: yes
+       region: "ap-south-1"
+       state: present
+       group_id: "sg-01609a296118484ca"
+       aws_access_key: "{{access_key}}"
+       aws_secret_key: "{{secret_key}}"
+    register: X
+
+
+  - debug:
+     var:  X.instances[0].private_ip
+
+  - debug:
+     var:  X.instances[1].private_ip
+
+  - debug:
+     var:  X.instances[2].private_ip
+
